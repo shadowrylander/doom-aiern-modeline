@@ -1836,6 +1836,11 @@ TEXT is alternative if icon is not available."
   (when (bound-and-true-p ryo-modal-mode)
     (doom-aiern-modeline--modal-icon " <R> " 'doom-aiern-modeline-evil-normal-state "Ryo modal")))
 
+(defsubst doom-aiern-modeline--sorrow ()
+  "The current sorrow state which is enabled by the command `sorrow-mode'."
+  (when (bound-and-true-p sorrow-mode)
+    (doom-aiern-modeline--modal-icon " <S> " 'doom-aiern-modeline-evil-normal-state "Sorrow")))
+
 (defsubst doom-aiern-modeline--modalka ()
   "The current modalka state which is enabled by the command `modalka-mode'."
   (when (bound-and-true-p modalka-mode)
@@ -1872,12 +1877,13 @@ TEXT is alternative if icon is not available."
 
 (doom-aiern-modeline-def-segment modals
   "Displays modal editing states, including `evil', `overwrite', `god', `ryo'
-and `xha-fly-kyes', etc."
+and `xah-fly-kyes', etc."
   (let* ((evil (doom-aiern-modeline--evil))
          (aiern (doom-aiern-modeline--aiern))
          (ow (doom-aiern-modeline--overwrite))
          (god (doom-aiern-modeline--god))
          (ryo (doom-aiern-modeline--ryo))
+         (sorrow (doom-aiern-modeline--sorrow))
          (modalka (doom-aiern-modeline--modalka))
          (xf (doom-aiern-modeline--xah-fly-keys))
          (boon (doom-aiern-modeline--boon))
@@ -1885,11 +1891,12 @@ and `xha-fly-kyes', etc."
          (meow (doom-aiern-modeline--meow))
          (sep (and (or evil aiern ow god ryo xf boon) (doom-aiern-modeline-spc))))
     (concat sep
-            (and evil (concat evil (and (or aiern ow god ryo modalka xf boon meow) vsep)))
-            (and aiern (concat aiern (and (or ow god ryo modalka xf boon meow) vsep)))
-            (and ow (concat ow (and (or god ryo modalka xf boon meow) vsep)))
-            (and god (concat god (and (or ryo modalka xf boon meow) vsep)))
-            (and ryo (concat ryo (and (or modalka xf boon meow) vsep)))
+            (and evil (concat evil (and (or aiern ow god ryo sorrow modalka xf boon meow) vsep)))
+            (and aiern (concat aiern (and (or ow god ryo sorrow modalka xf boon meow) vsep)))
+            (and ow (concat ow (and (or god ryo sorrow modalka xf boon meow) vsep)))
+            (and god (concat god (and (or ryo sorrow modalka xf boon meow) vsep)))
+            (and ryo (concat ryo (and (or sorrow modalka xf boon meow) vsep)))
+            (and sorrow (concat sorrow (and (or modalka xf boon meow) vsep)))
             (and modalka (concat modalka (and (or xf boon meow) vsep)))
             (and xf (concat xf (and (or boon meow) vsep)))
             (and boon (concat boon (and meow vsep)))
