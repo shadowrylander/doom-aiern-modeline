@@ -1787,7 +1787,13 @@ TEXT is alternative if icon is not available."
   "The current evil state. Requires `evil-mode' to be enabled."
   (when (bound-and-true-p evil-local-mode)
     (doom-aiern-modeline--modal-icon
-     (let ((tag (evil-state-property evil-state :tag t)))
+     (let ((tag (replace-regexp-in-string
+          "> "
+          ""
+          (replace-regexp-in-string
+            " <"
+            ""
+            (evil-state-property evil-state :tag t)))))
        (if (stringp tag) tag (funcall tag)))
      (cond
       ((evil-normal-state-p) 'doom-aiern-modeline-evil-normal-state)
@@ -1824,36 +1830,46 @@ TEXT is alternative if icon is not available."
   (when (and (bound-and-true-p overwrite-mode)
              (not (or (bound-and-true-p evil-local-mode)
                       (bound-and-true-p aiern-local-mode))))
-    (doom-aiern-modeline--modal-icon " <O> " 'doom-aiern-modeline-urgent "Overwrite mode")))
+    (doom-aiern-modeline--modal-icon " O " 'doom-aiern-modeline-urgent "Overwrite mode")))
 
 (defsubst doom-aiern-modeline--god ()
   "The current god state which is enabled by the command `god-mode'."
   (when (bound-and-true-p god-local-mode)
-    (doom-aiern-modeline--modal-icon " <G> " 'doom-aiern-modeline-evil-normal-state "God mode")))
+    (doom-aiern-modeline--modal-icon " G " 'doom-aiern-modeline-evil-normal-state "God mode")))
 
 (defsubst doom-aiern-modeline--ryo ()
   "The current ryo-modal state which is enabled by the command `ryo-modal-mode'."
   (when (bound-and-true-p ryo-modal-mode)
-    (doom-aiern-modeline--modal-icon " <R> " 'doom-aiern-modeline-evil-normal-state "Ryo modal")))
+    (doom-aiern-modeline--modal-icon " R " 'doom-aiern-modeline-evil-normal-state "Ryo modal mode")))
 
 (defsubst doom-aiern-modeline--sorrow ()
   "The current sorrow state which is enabled by the command `sorrow-mode'."
   (when (bound-and-true-p sorrow-mode)
-    (doom-aiern-modeline--modal-icon " <S> " 'doom-aiern-modeline-evil-normal-state "Sorrow")))
+    (doom-aiern-modeline--modal-icon "S" 'doom-aiern-modeline-evil-normal-state "Sorrow mode")))
 
 (defsubst doom-aiern-modeline--modalka ()
   "The current modalka state which is enabled by the command `modalka-mode'."
   (when (bound-and-true-p modalka-mode)
-    (doom-aiern-modeline--modal-icon " <M> " 'doom-aiern-modeline-evil-normal-state "Modalka modal")))
+    (doom-aiern-modeline--modal-icon " M " 'doom-aiern-modeline-evil-normal-state "Modalka mode")))
+
+(defsubst doom-aiern-modeline--hydra ()
+  "The current hydra state."
+  (when hydra-curr-map
+    (doom-aiern-modeline--modal-icon " H " 'doom-aiern-modeline-evil-normal-state "Hydra")))
+
+(defsubst doom-aiern-modeline--deino ()
+  "The current deino state."
+  (when deino-curr-map
+    (doom-aiern-modeline--modal-icon "D" 'doom-aiern-modeline-evil-normal-state "Deino")))
 
 (defsubst doom-aiern-modeline--xah-fly-keys ()
   "The current `xah-fly-keys' state."
   (when (bound-and-true-p xah-fly-keys)
     (if xah-fly-insert-state-q
-        (doom-aiern-modeline--modal-icon " <I> "
+        (doom-aiern-modeline--modal-icon " I "
                                    'doom-aiern-modeline-evil-insert-state
                                    (format "Xah-fly insert mode"))
-      (doom-aiern-modeline--modal-icon " <C> "
+      (doom-aiern-modeline--modal-icon " C "
                                  'doom-aiern-modeline-evil-normal-state
                                  (format "Xah-fly command mode")))))
 
@@ -1885,23 +1901,26 @@ and `xah-fly-kyes', etc."
          (ryo (doom-aiern-modeline--ryo))
          (sorrow (doom-aiern-modeline--sorrow))
          (modalka (doom-aiern-modeline--modalka))
+         (hydra (doom-aiern-modeline--hydra))
+         (deino (doom-aiern-modeline--deino))
          (xf (doom-aiern-modeline--xah-fly-keys))
          (boon (doom-aiern-modeline--boon))
-         (vsep (doom-aiern-modeline-vspc))
+         (nospc (doom-aiern-modeline-nospc))
          (meow (doom-aiern-modeline--meow))
-         (sep (and (or evil aiern ow god ryo xf boon) (doom-aiern-modeline-spc))))
-    (concat sep
-            (and evil (concat evil (and (or aiern ow god ryo sorrow modalka xf boon meow) vsep)))
-            (and aiern (concat aiern (and (or ow god ryo sorrow modalka xf boon meow) vsep)))
-            (and ow (concat ow (and (or god ryo sorrow modalka xf boon meow) vsep)))
-            (and god (concat god (and (or ryo sorrow modalka xf boon meow) vsep)))
-            (and ryo (concat ryo (and (or sorrow modalka xf boon meow) vsep)))
-            (and sorrow (concat sorrow (and (or modalka xf boon meow) vsep)))
-            (and modalka (concat modalka (and (or xf boon meow) vsep)))
-            (and xf (concat xf (and (or boon meow) vsep)))
-            (and boon (concat boon (and meow vsep)))
-            meow
-            sep)))
+         (sep (and (or evil aiern ow god ryo sorrow modalka hydra deino xf boon) (doom-aiern-modeline-spc))))
+    (concat "<"
+            (and evil (concat evil (and (or aiern ow god ryo sorrow modalka hydra deino xf boon meow) nospc)))
+            (and aiern (concat aiern (and (or ow god ryo sorrow modalka hydra deino xf boon meow) nospc)))
+            (and ow (concat ow (and (or god ryo sorrow modalka hydra deino xf boon meow) nospc)))
+            (and god (concat god (and (or ryo sorrow modalka hydra deino xf boon meow) nospc)))
+            (and ryo (concat ryo (and (or sorrow modalka hydra deino xf boon meow) nospc)))
+            (and sorrow (concat sorrow (and (or modalka hydra deino xf boon meow) nospc)))
+            (and modalka (concat modalka (and (or hydra deino xf boon meow) nospc)))
+            (and hydra (concat hydra (and (or deino xf boon meow) nospc)))
+            (and deino (concat deino (and (or xf boon meow) nospc)))
+            (and xf (concat xf (and (or boon meow) nospc)))
+            (and boon (concat boon (and meow nospc)))
+            meow ">")))
 
 ;;
 ;; Objed state

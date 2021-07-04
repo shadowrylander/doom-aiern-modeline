@@ -1078,6 +1078,12 @@ If DEFAULT is non-nil, set the default mode-line for all buffers."
                             'doom-aiern-modeline-vspc-face
                           '(:inherit (doom-aiern-modeline-vspc-face mode-line-inactive)))))
 
+(defsubst doom-aiern-modeline-nospc ()
+  "Text style with icons in mode-line."
+  (propertize "" 'face (if (doom-aiern-modeline--active)
+                            'doom-aiern-modeline-vspc-face
+                          '(:inherit (doom-aiern-modeline-vspc-face mode-line-inactive)))))
+
 (defun doom-aiern-modeline--font-height ()
   "Calculate the actual char height of the mode-line."
   (let ((height (face-attribute 'mode-line :height)))
