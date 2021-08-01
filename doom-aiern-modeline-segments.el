@@ -1845,7 +1845,7 @@ TEXT is alternative if icon is not available."
 (defsubst doom-aiern-modeline--sorrow ()
   "The current sorrow state which is enabled by the command `sorrow-mode'."
   (when (bound-and-true-p sorrow-mode)
-    (doom-aiern-modeline--modal-icon "S" 'doom-aiern-modeline-evil-normal-state "Sorrow mode")))
+    (doom-aiern-modeline--modal-icon " S " 'doom-aiern-modeline-evil-normal-state "Sorrow mode")))
 
 (defsubst doom-aiern-modeline--modalka ()
   "The current modalka state which is enabled by the command `modalka-mode'."
@@ -1860,7 +1860,19 @@ TEXT is alternative if icon is not available."
 (defsubst doom-aiern-modeline--deino ()
   "The current deino state."
   (when deino-curr-map
-    (doom-aiern-modeline--modal-icon "D" 'doom-aiern-modeline-evil-normal-state "Deino")))
+    (doom-aiern-modeline--modal-icon " D " 'doom-aiern-modeline-evil-normal-state "Deino")))
+
+(defvar meq/var/titan-fell-mode nil)
+(defsubst doom-aiern-modeline--titan-fell ()
+  "The current titan-fell state."
+  (when meq/var/titan-fell-mode
+    (doom-aiern-modeline--modal-icon " TF " 'doom-aiern-modeline-evil-normal-state "Titan Fell")))
+
+(defvar meq/var/titan-doc-mode nil)
+(defsubst doom-aiern-modeline--titan-doc ()
+  "The current titan-doc state."
+  (when meq/var/titan-doc-mode
+    (doom-aiern-modeline--modal-icon " TD " 'doom-aiern-modeline-evil-normal-state "Titan Doc")))
 
 (defsubst doom-aiern-modeline--xah-fly-keys ()
   "The current `xah-fly-keys' state."
@@ -1903,21 +1915,25 @@ and `xah-fly-kyes', etc."
          (modalka (doom-aiern-modeline--modalka))
          (hydra (doom-aiern-modeline--hydra))
          (deino (doom-aiern-modeline--deino))
+         (titan-fell (doom-aiern-modeline--titan-fell))
+         (titan-doc (doom-aiern-modeline--titan-doc))
          (xf (doom-aiern-modeline--xah-fly-keys))
          (boon (doom-aiern-modeline--boon))
          (nospc (doom-aiern-modeline-nospc))
          (meow (doom-aiern-modeline--meow))
-         (sep (and (or evil aiern ow god ryo sorrow modalka hydra deino xf boon) (doom-aiern-modeline-spc))))
+         (sep (and (or evil aiern ow god ryo sorrow modalka hydra deino titan-fell titan-doc xf boon) (doom-aiern-modeline-spc))))
     (concat "<"
-            (and evil (concat evil (and (or aiern ow god ryo sorrow modalka hydra deino xf boon meow) nospc)))
-            (and aiern (concat aiern (and (or ow god ryo sorrow modalka hydra deino xf boon meow) nospc)))
-            (and ow (concat ow (and (or god ryo sorrow modalka hydra deino xf boon meow) nospc)))
-            (and god (concat god (and (or ryo sorrow modalka hydra deino xf boon meow) nospc)))
-            (and ryo (concat ryo (and (or sorrow modalka hydra deino xf boon meow) nospc)))
-            (and sorrow (concat sorrow (and (or modalka hydra deino xf boon meow) nospc)))
-            (and modalka (concat modalka (and (or hydra deino xf boon meow) nospc)))
-            (and hydra (concat hydra (and (or deino xf boon meow) nospc)))
-            (and deino (concat deino (and (or xf boon meow) nospc)))
+            (and evil (concat evil (and (or aiern ow god ryo sorrow modalka hydra deino titan-fell titan-doc xf boon meow) nospc)))
+            (and aiern (concat aiern (and (or ow god ryo sorrow modalka hydra deino titan-fell titan-doc xf boon meow) nospc)))
+            (and ow (concat ow (and (or god ryo sorrow modalka hydra deino titan-fell titan-doc xf boon meow) nospc)))
+            (and god (concat god (and (or ryo sorrow modalka hydra deino titan-fell titan-doc xf boon meow) nospc)))
+            (and ryo (concat ryo (and (or sorrow modalka hydra deino titan-fell titan-doc xf boon meow) nospc)))
+            (and sorrow (concat sorrow (and (or modalka hydra deino titan-fell titan-doc xf boon meow) nospc)))
+            (and modalka (concat modalka (and (or hydra deino titan-fell titan-doc xf boon meow) nospc)))
+            (and hydra (concat hydra (and (or deino titan-fell titan-doc xf boon meow) nospc)))
+            (and deino (concat deino (and (or titan-fell titan-doc xf boon meow) nospc)))
+            (and titan-fell (concat titan-fell (and (or titan-doc xf boon meow) nospc)))
+            (and titan-doc (concat titan-doc (and (or xf boon meow) nospc)))
             (and xf (concat xf (and (or boon meow) nospc)))
             (and boon (concat boon (and meow nospc)))
             meow ">")))
