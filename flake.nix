@@ -36,7 +36,7 @@
     outputs = inputs@{ self, flake-utils, settings, ... }: with builtins; with settings.lib; with flake-utils.lib; settings.mkOutputs {
         inherit inputs;
         type = "emacs-nox";
-        pname = "";
+        pname = "doom-aiern-modeline";
         callPackage = { emacs, pname }: emacs.pkgs.trivialBuild rec {
             inherit pname;
             src = ./.;
